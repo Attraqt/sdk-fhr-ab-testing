@@ -1,0 +1,22 @@
+{
+    "allowedLicenses": [
+        {
+            "moduleLicense": "The Apache Software License, Version 2.0"
+        },
+        {
+            "moduleLicense": "Apache License 2.0"
+        },
+        {
+            "moduleLicense": "MIT License"
+        },
+        {
+            "moduleLicense": "CDDL + GPLv2 with classpath exception"
+        },
+        {
+            "moduleLicense": "CDDL+GPL License"
+        },
+        {
+            "moduleLicense": "GPL2 w/ CPE"
+        }
+    ]
+}

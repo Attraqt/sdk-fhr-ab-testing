@@ -1,0 +1,87 @@
+import io.franzbecker.gradle.lombok.task.DelombokTask
+
+plugins {
+    id 'java'
+    id 'groovy'
+    id 'pl.allegro.tech.build.axion-release' version '1.12.1'
+    id 'io.franzbecker.gradle-lombok' version '4.0.0'
+    id 'org.cadixdev.licenser' version '0.5.0'
+    id 'com.github.jk1.dependency-license-report' version '1.16'
+}
+
+apply plugin: 'pl.allegro.tech.build.axion-release'
+
+group 'com.attraqt'
+version scmVersion.version
+
+
+build {
+    // Check license of dependencies (dependency-license-report plugin).
+    // Fails if dependency added that not in allowed-licenses.json list.
+    dependsOn checkLicense
+    // Check license header is correct (cadixdev licenser plugin).
+    // Use updateLicenses goal to fix if this goal fails.
+    // updateLicenses is not used in build, so that CI/CD does
+    // not change source.
+    dependsOn checkLicenses
+}
+
+scmVersion {
+    tag.prefix = project.name
+}
+
+license {
+    header = project.file('src/main/resources/LICENSE-HEADER')
+}
+
+licenseReport {
+    allowedLicensesFile = new File('src/main/resources/allowed-licenses.json')
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    annotationProcessor 'org.projectlombok:lombok:1.18.10'
+
+    compileOnly 'org.projectlombok:lombok:1.18.10'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.2.1'
+    implementation 'com.google.guava:guava:17.0'
+    implementation group: 'javax.ws.rs', name: 'javax.ws.rs-api', version: '2.0.1'
+    implementation group: 'org.glassfish.jersey.core', name: 'jersey-client', version: '2.23.1'
+    implementation group: 'org.glassfish.jersey.media', name: 'jersey-media-json-jackson', version: '2.23.1'
+    implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
+    implementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.30'
+
+    testImplementation 'org.codehaus.groovy:groovy-all:2.4.13'
+    testImplementation 'org.spockframework:spock-core:1.2-groovy-2.4'
+    constraints {
+        testImplementation 'org.apache.avro:avro:1.9.1'
+    }
+    testImplementation 'cglib:cglib-nodep:3.2.5'
+    testImplementation 'org.objenesis:objenesis:2.3'
+    testImplementation 'org.spf4j:spf4j-slf4j-test:8.8.5'
+}
+
+
+configurations.testCompile {
+    //Exclude slf4j for testing so that spf4j-slf4j-test is used instead
+    exclude group: 'org.slf4j', module: 'slf4j-simple'
+}
+
+task delombok(type: DelombokTask, dependsOn: compileJava) {
+    ext.outputDir = file("$buildDir/delombok")
+    outputs.dir(outputDir)
+    sourceSets.main.java.srcDirs.each {
+        inputs.dir(it)
+        args(it, "-d", outputDir)
+    }
+}
+
+javadoc {
+    dependsOn delombok
+    source = delombok.outputDir
+    failOnError = false
+}
