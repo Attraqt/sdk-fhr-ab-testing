@@ -7,6 +7,8 @@ plugins {
     id 'io.franzbecker.gradle-lombok' version '4.0.0'
     id 'org.cadixdev.licenser' version '0.5.0'
     id 'com.github.jk1.dependency-license-report' version '1.16'
+    id 'maven-publish'
+    id 'signing'
 }
 
 apply plugin: 'pl.allegro.tech.build.axion-release'
@@ -84,4 +86,55 @@ javadoc {
     dependsOn delombok
     source = delombok.outputDir
     failOnError = false
+}
+
+publishing {
+//    repositories {
+//        maven {
+//            name = "MavenCentral"
+//            val releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+//            val snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots"
+//            url = uri(if(version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl)
+//            credentials {
+//                username = (properties["sonyatype.user"] ?: properties["sonyatype.user"]) as String?
+//                password = (properties["sonyatype.password"] ?: properties["sonyatype.password"]) as String?
+//            }
+//        }
+//    }
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId = 'sdk-fhr-ab-tesing'
+            from components.java
+            pom {
+                name = 'FHR A/B Tesing SDK'
+                description = 'TBD'
+                url = 'TBD'
+//                licenses {
+//                    license {
+//                        name = 'The Apache License, Version 2.0'
+//                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+//                    }
+//                }
+                developers {
+                    developer {
+                        id = 'attraqt'
+                        name = 'Attraqt'
+                        //email = ''
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com/Attraqt/sdk-fhr-ab-testing.git'
+                    developerConnection = 'scm:git:ssh://github.com/Attraqt/sdk-fhr-ab-testing.git'
+                    //url = 'http://example.com/my-library/'
+                }
+            }
+        }
+    }
+
+    signing {
+        def signingKey = (properties["signing.key"] ?: properties["sonyatype.key"]) as String?
+        def signingPassword = (properties["signing.password"] ?: properties["sonyatype.password"]) as String?
+        useInMemoryPgpKeys(signingKey, signingPassword)
+        sign publishing.publications.mavenJava
+    }
 }
