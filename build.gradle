@@ -130,11 +130,11 @@ publishing {
             }
         }
     }
+}
 
-    signing {
-        def signingKey = (properties["signing.key"] ?: properties["sonyatype.key"]) as String?
-        def signingPassword = (properties["signing.password"] ?: properties["sonyatype.password"]) as String?
-        useInMemoryPgpKeys(signingKey, signingPassword)
-        sign publishing.publications.mavenJava
-    }
+signing {
+    def signingKey = findProperty("signing.key")
+    def signingPassword = findProperty("signing.password")
+    useInMemoryPgpKeys(signingKey, signingPassword)
+    sign publishing.publications.mavenJava
 }
