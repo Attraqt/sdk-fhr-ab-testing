@@ -89,43 +89,44 @@ javadoc {
 }
 
 publishing {
-//    repositories {
-//        maven {
-//            name = "MavenCentral"
-//            val releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
-//            val snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots"
-//            url = uri(if(version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl)
-//            credentials {
-//                username = (properties["sonyatype.user"] ?: properties["sonyatype.user"]) as String?
-//                password = (properties["sonyatype.password"] ?: properties["sonyatype.password"]) as String?
-//            }
-//        }
-//    }
+    repositories {
+        maven {
+            name = "MavenCentral"
+            def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+            def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots"
+            url = uri((version.toString().endsWith("SNAPSHOT"))? snapshotsRepoUrl : releasesRepoUrl)
+            credentials {
+                username = findProperty("sonyatype.user")
+                password = findProperty("sonyatype.password")
+            }
+        }
+    }
     publications {
         mavenJava(MavenPublication) {
             artifactId = 'sdk-fhr-ab-tesing'
             from components.java
             pom {
-                name = 'FHR A/B Tesing SDK'
-                description = 'TBD'
-                url = 'TBD'
-//                licenses {
-//                    license {
-//                        name = 'The Apache License, Version 2.0'
-//                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-//                    }
-//                }
+                name = 'FHR A/B Testing SDK'
+                description = 'The Fredhopper A/B Testing SDK is a software library which simplifies adding' +
+                        ' A/B testing of Fredhopper merchandising rules (and configuration) to your website backend'
+                url = 'https://github.com/Attraqt/sdk-fhr-ab-testing'
+                licenses {
+                    license {
+                        name = 'GNU General Public License, Version 3'
+                        url = 'https://www.gnu.org/licenses/gpl-3.0.en.html'
+                    }
+                }
                 developers {
                     developer {
                         id = 'attraqt'
                         name = 'Attraqt'
-                        //email = ''
+                        email = ''
                     }
                 }
                 scm {
                     connection = 'scm:git:git://github.com/Attraqt/sdk-fhr-ab-testing.git'
                     developerConnection = 'scm:git:ssh://github.com/Attraqt/sdk-fhr-ab-testing.git'
-                    //url = 'http://example.com/my-library/'
+                    url = 'https://github.com/Attraqt/sdk-fhr-ab-testing'
                 }
             }
         }

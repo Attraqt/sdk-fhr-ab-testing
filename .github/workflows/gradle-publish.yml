@@ -2,7 +2,8 @@ name: Publish SDK
 
 on:
   push:
-    branches: [ REP-1119-Publish-SDK-to-Maven-Central ]
+    tags:
+      - '*'
 
 jobs:
   build:
