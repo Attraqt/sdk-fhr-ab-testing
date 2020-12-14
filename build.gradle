@@ -120,7 +120,7 @@ publishing {
                     developer {
                         id = 'attraqt'
                         name = 'Attraqt'
-                        email = ''
+                        email = 'contact@attraqt.com'
                     }
                 }
                 scm {
