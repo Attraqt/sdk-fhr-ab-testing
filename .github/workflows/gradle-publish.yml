@@ -17,4 +17,4 @@ jobs:
         with:
           java-version: 8
       - name: Publish
-        run: ./gradlew -Psonyatype.user=${{ secrets.SONATYPE_USER }} -Psonyatype.password=${{ secrets.SONATYPE_PASSWORD }} -Psigning.key="${{ secrets.PGP_SIGNING_KEY }}" -Psigning.password="${{ secrets.PGP_SIGNING_PASSWORD }}" publish
+        run: ./gradlew -Psonyatype.user="${{ secrets.SONATYPE_USER }}" -Psonyatype.password="${{ secrets.SONATYPE_PASSWORD }}" -Psigning.key="${{ secrets.PGP_SIGNING_KEY }}" -Psigning.password="${{ secrets.PGP_SIGNING_PASSWORD }}" publish
