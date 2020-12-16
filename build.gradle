@@ -1,6 +1,7 @@
 import io.franzbecker.gradle.lombok.task.DelombokTask
 
 plugins {
+    id 'java-library'
     id 'java'
     id 'groovy'
     id 'pl.allegro.tech.build.axion-release' version '1.12.1'
