@@ -135,7 +135,7 @@ publishing {
 }
 
 signing {
-    def signingKey = findProperty("signing.key")
+    def signingKey = findProperty("signing.key") as String
     println(signingKey.substring(0,50))
     def signingPassword = findProperty("signing.password")
     useInMemoryPgpKeys(signingKey, signingPassword)
