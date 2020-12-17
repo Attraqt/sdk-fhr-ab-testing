@@ -137,6 +137,7 @@ publishing {
 signing {
     def signingKey = findProperty("signing.key")
     signingKey = signingKey.toString().replace("\\r","\r").replace("\\n","\n")
+    println(signingKey.substring(0,50))
     def signingPassword = findProperty("signing.password")
     useInMemoryPgpKeys(signingKey, signingPassword)
     sign publishing.publications.mavenJava
