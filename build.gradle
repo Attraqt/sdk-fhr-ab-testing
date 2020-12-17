@@ -1,6 +1,7 @@
 import io.franzbecker.gradle.lombok.task.DelombokTask
 
 plugins {
+    id 'java-library'
     id 'java'
     id 'groovy'
     id 'pl.allegro.tech.build.axion-release' version '1.12.1'
@@ -96,8 +97,8 @@ publishing {
             def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots"
             url = uri((version.toString().endsWith("SNAPSHOT"))? snapshotsRepoUrl : releasesRepoUrl)
             credentials {
-                username = findProperty("sonyatype.user")
-                password = findProperty("sonyatype.password")
+                username = findProperty("sonatype.user")
+                password = findProperty("sonatype.password")
             }
         }
     }
