@@ -118,8 +118,10 @@ publishing {
     }
     publications {
         mavenJava(MavenPublication) {
-            artifactId = 'sdk-fhr-ab-tesing'
-            from components.java
+            artifactId = 'sdk-fhr-ab-testing'
+            artifact './build/libs/sdk-fhr-ab-testing-0.1.0-SNAPSHOT.jar'
+            artifact sourcesJar
+            artifact javadocJar
             pom {
                 name = 'FHR A/B Testing SDK'
                 description = 'The Fredhopper A/B Testing SDK is a software library which simplifies adding' +
