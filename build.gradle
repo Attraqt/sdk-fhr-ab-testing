@@ -89,6 +89,11 @@ javadoc {
     failOnError = false
 }
 
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
 publishing {
     repositories {
         maven {
