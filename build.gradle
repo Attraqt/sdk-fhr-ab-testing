@@ -90,13 +90,9 @@ javadoc {
 }
 
 java {
-    withJar()
+    jar
     withJavadocJar()
     withSourcesJar()
-}
-
-artifacts {
-    archives jar
 }
 
 publishing {
