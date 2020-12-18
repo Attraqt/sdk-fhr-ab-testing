@@ -109,7 +109,7 @@ publishing {
             pom {
                 name = 'FHR A/B Testing SDK'
                 description = 'The Fredhopper A/B Testing SDK is a software library which simplifies adding' +
-                        ' A/B testing of Fredhopper merchandising rules (and configuration) to your website backend'
+                        ' A/B testing of Fredhopper merchandising rules and configuration to your website backend'
                 url = 'https://github.com/Attraqt/sdk-fhr-ab-testing'
                 def tagVersion = findProperty("tag.version") as String
                 version = (tagVersion && !tagVersion.empty)? tagVersion : project.getVersion()
