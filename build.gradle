@@ -109,6 +109,8 @@ publishing {
             name = "MavenCentral"
             def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
             def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots"
+            def tagVersion = findProperty("tag.version") as String
+            version = (tagVersion && !tagVersion.empty)? tagVersion : project.getVersion()
             url = uri((version.toString().endsWith("SNAPSHOT"))? snapshotsRepoUrl : releasesRepoUrl)
             credentials {
                 username = findProperty("sonatype.user")
