@@ -1,12 +1,15 @@
 import io.franzbecker.gradle.lombok.task.DelombokTask
 
 plugins {
+    id 'java-library'
     id 'java'
     id 'groovy'
     id 'pl.allegro.tech.build.axion-release' version '1.12.1'
     id 'io.franzbecker.gradle-lombok' version '4.0.0'
     id 'org.cadixdev.licenser' version '0.5.0'
     id 'com.github.jk1.dependency-license-report' version '1.16'
+    id 'maven-publish'
+    id 'signing'
 }
 
 apply plugin: 'pl.allegro.tech.build.axion-release'
@@ -84,4 +87,74 @@ javadoc {
     dependsOn delombok
     source = delombok.outputDir
     failOnError = false
+}
+
+task sourcesJar(type: Jar) {
+    archiveClassifier.set("sources")
+    from sourceSets.main.allJava
+}
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    archiveClassifier.set("javadoc")
+    from javadoc.destinationDir
+}
+artifacts {
+    archives jar
+    archives sourcesJar
+    archives javadocJar
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "MavenCentral"
+            def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+            def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots"
+            url = uri((version.toString().endsWith("SNAPSHOT"))? snapshotsRepoUrl : releasesRepoUrl)
+            credentials {
+                username = findProperty("sonatype.user")
+                password = findProperty("sonatype.password")
+            }
+        }
+    }
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId = 'sdk-fhr-ab-testing'
+            artifact jar.archivePath
+            artifact sourcesJar
+            artifact javadocJar
+            pom {
+                name = 'FHR A/B Testing SDK'
+                description = 'The Fredhopper A/B Testing SDK is a software library which simplifies adding' +
+                        ' A/B testing of Fredhopper merchandising rules and configuration to your website backend'
+                url = 'https://github.com/Attraqt/sdk-fhr-ab-testing'
+                def tagVersion = findProperty("tag.version") as String
+                version = (tagVersion && !tagVersion.empty)? tagVersion : project.getVersion()
+                licenses {
+                    license {
+                        name = 'GNU General Public License, Version 3'
+                        url = 'https://www.gnu.org/licenses/gpl-3.0.en.html'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'attraqt'
+                        name = 'Attraqt'
+                        email = 'contact@attraqt.com'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com/Attraqt/sdk-fhr-ab-testing.git'
+                    developerConnection = 'scm:git:ssh://github.com/Attraqt/sdk-fhr-ab-testing.git'
+                    url = 'https://github.com/Attraqt/sdk-fhr-ab-testing'
+                }
+            }
+        }
+    }
+}
+
+signing {
+    def signingKey = findProperty("signing.key") as String
+    def signingPassword = findProperty("signing.password") as String
+    useInMemoryPgpKeys(signingKey, signingPassword)
+    sign publishing.publications.mavenJava
 }
