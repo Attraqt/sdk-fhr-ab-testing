@@ -94,6 +94,27 @@ dependencies {
     testImplementation 'org.spf4j:spf4j-slf4j-test:8.10.0'
 }
 
+test {
+    useJUnitPlatform()
+    jvmArgs = [
+        '--add-opens=java.base/java.lang=ALL-UNNAMED',
+        '--add-opens=java.base/java.util=ALL-UNNAMED',
+        '--add-opens=java.base/java.util.concurrent=ALL-UNNAMED',
+        '--add-opens=java.base/java.util.concurrent.atomic=ALL-UNNAMED',
+        '--add-opens=java.base/java.lang.invoke=ALL-UNNAMED',
+        '--add-opens=java.base/java.lang.reflect=ALL-UNNAMED',
+        '--add-opens=java.base/java.net=ALL-UNNAMED',
+        '--add-opens=java.base/java.nio=ALL-UNNAMED',
+        '--add-opens=java.base/java.text=ALL-UNNAMED',
+        '--add-opens=java.base/java.time=ALL-UNNAMED',
+        '--add-opens=java.base/sun.nio.ch=ALL-UNNAMED',
+        '--add-opens=java.base/sun.nio.cs=ALL-UNNAMED',
+        '--add-opens=java.base/sun.security.util=ALL-UNNAMED',
+        '--add-opens=java.base/sun.net.util=ALL-UNNAMED',
+        '--add-opens=java.logging/java.util.logging=ALL-UNNAMED'
+    ]
+}
+
 
 configurations.testImplementation {
     //Exclude slf4j for testing so that spf4j-slf4j-test is used instead
