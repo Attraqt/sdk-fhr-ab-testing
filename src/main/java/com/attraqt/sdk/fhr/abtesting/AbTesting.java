@@ -30,7 +30,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import javax.ws.rs.core.UriBuilder;
+import jakarta.ws.rs.core.UriBuilder;
 
 import com.attraqt.sdk.fhr.abtesting.caching.AbTestsCache;
 import com.attraqt.sdk.fhr.abtesting.caching.InMemoryAbTestsCache;
