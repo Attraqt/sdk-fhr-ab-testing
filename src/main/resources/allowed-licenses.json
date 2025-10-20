@@ -7,12 +7,6 @@
             "moduleLicense": "Apache License 2.0"
         },
         {
-            "moduleLicense": "Apache License, Version 2.0"
-        },
-        {
-            "moduleLicense": "\"Apache 2.0\";link=\"http://www.apache.org/licenses/LICENSE-2.0.txt\""
-        },
-        {
             "moduleLicense": "Apache 2.0"
         },
         {
@@ -31,25 +25,13 @@
             "moduleLicense": "EDL 1.0"
         },
         {
-            "moduleLicense": "Eclipse Public License v. 2.0"
-        },
-        {
             "moduleLicense": "EPL-2.0"
-        },
-        {
-            "moduleLicense": "Eclipse Public License - v 2.0"
         },
         {
             "moduleLicense": "GNU General Public License, version 2 with the GNU Classpath Exception"
         },
         {
             "moduleLicense": "MIT"
-        },
-        {
-            "moduleLicense": "The MIT License"
-        },
-        {
-            "moduleLicense": null
         }
     ]
 }
