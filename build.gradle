@@ -37,7 +37,7 @@ build {
 }
 
 scmVersion {
-    tag.prefix = project.name
+    tag.prefix = ''
 }
 
 license {
