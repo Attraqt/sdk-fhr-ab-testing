@@ -73,7 +73,7 @@ dependencies {
     api 'org.glassfish.jersey.core:jersey-client:3.1.5'
     implementation 'org.glassfish.jersey.media:jersey-media-json-jackson:3.1.5'
     implementation 'org.glassfish.jersey.inject:jersey-hk2:3.1.5'
-    
+
     // Updated SLF4J (was 1.7.30, now 2.0.9)
     implementation 'org.slf4j:slf4j-api:2.0.9'
     implementation 'org.slf4j:slf4j-simple:2.0.9'
@@ -163,8 +163,8 @@ publishing {
     }
     publications {
         mavenJava(MavenPublication) {
+            from components.java
             artifactId = 'sdk-fhr-ab-testing'
-            artifact jar.archivePath
             artifact sourcesJar
             artifact javadocJar
             pom {
