@@ -1,0 +1,36 @@
+project:
+  name: sdk-fhr-ab-testing
+  description: Fredhopper A/B Testing SDK
+  longDescription: The Fredhopper A/B Testing SDK is a software library which simplifies adding A/B testing of Fredhopper merchandising rules and configuration to your website backend
+  links:
+    homepage: https://github.com/Attraqt/sdk-fhr-ab-testing
+  authors:
+    - Attraqt
+  license: GPL-3.0
+  inceptionYear: 2020
+  java:
+    groupId: com.attraqt
+    version: 21
+
+signing:
+  active: ALWAYS
+  armored: true
+
+deploy:
+  maven:
+    mavenCentral:
+      sonatype:
+        active: ALWAYS
+        url: https://central.sonatype.com/api/v1/publisher
+        stagingRepositories:
+          - build/staging-deploy
+        authorization: BEARER
+
+distributions:
+  sdk-fhr-ab-testing:
+    type: JAVA_BINARY
+    artifacts:
+      - path: build/libs/{{projectName}}-{{projectVersion}}.jar
+      - path: build/libs/{{projectName}}-{{projectVersion}}-sources.jar
+      - path: build/libs/{{projectName}}-{{projectVersion}}-javadoc.jar
+
