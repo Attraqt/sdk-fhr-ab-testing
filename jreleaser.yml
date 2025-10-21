@@ -24,13 +24,3 @@ deploy:
         url: https://central.sonatype.com/api/v1/publisher
         stagingRepositories:
           - build/staging-deploy
-        authorization: BEARER
-
-distributions:
-  sdk-fhr-ab-testing:
-    type: JAVA_BINARY
-    artifacts:
-      - path: build/libs/{{projectName}}-{{projectVersion}}.jar
-      - path: build/libs/{{projectName}}-{{projectVersion}}-sources.jar
-      - path: build/libs/{{projectName}}-{{projectVersion}}-javadoc.jar
-
