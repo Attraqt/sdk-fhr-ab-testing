@@ -13,6 +13,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: ${{ github.ref }}
 
       - name: Set up JDK 21
         uses: actions/setup-java@v4
@@ -21,13 +22,13 @@ jobs:
           distribution: 'temurin'
 
       - name: Build and Test
-        run: ./gradlew -Ptag.version="${GITHUB_REF/refs\/tags\//}" clean build
+        run: ./gradlew clean build
 
       - name: Publish to Local Staging
         env:
           JRELEASER_GPG_PASSPHRASE: ${{ secrets.JRELEASER_GPG_PASSPHRASE }}
           JRELEASER_GPG_SECRET_KEY: ${{ secrets.JRELEASER_GPG_SECRET_KEY }}
-        run: ./gradlew -Ptag.version="${GITHUB_REF/refs\/tags\//}" publish
+        run: ./gradlew publish
 
       - name: Deploy to Maven Central with JReleaser
         env:
@@ -37,7 +38,7 @@ jobs:
           JRELEASER_GPG_SECRET_KEY: ${{ secrets.JRELEASER_GPG_SECRET_KEY }}
           JRELEASER_GPG_PUBLIC_KEY: ${{ secrets.JRELEASER_GPG_PUBLIC_KEY }}
           JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew -Ptag.version="${GITHUB_REF/refs\/tags\//}" jreleaserDeploy
+        run: ./gradlew jreleaserDeploy
 
       - name: JReleaser Output
         if: always()
