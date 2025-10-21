@@ -24,6 +24,9 @@ jobs:
         run: ./gradlew -Ptag.version="${GITHUB_REF/refs\/tags\//}" clean build
 
       - name: Publish to Local Staging
+        env:
+          JRELEASER_GPG_PASSPHRASE: ${{ secrets.JRELEASER_GPG_PASSPHRASE }}
+          JRELEASER_GPG_SECRET_KEY: ${{ secrets.JRELEASER_GPG_SECRET_KEY }}
         run: ./gradlew -Ptag.version="${GITHUB_REF/refs\/tags\//}" publish
 
       - name: Deploy to Maven Central with JReleaser
@@ -34,7 +37,7 @@ jobs:
           JRELEASER_GPG_SECRET_KEY: ${{ secrets.JRELEASER_GPG_SECRET_KEY }}
           JRELEASER_GPG_PUBLIC_KEY: ${{ secrets.JRELEASER_GPG_PUBLIC_KEY }}
           JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew jreleaserDeploy
+        run: ./gradlew -Ptag.version="${GITHUB_REF/refs\/tags\//}" jreleaserDeploy
 
       - name: JReleaser Output
         if: always()

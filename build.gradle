@@ -200,6 +200,21 @@ publishing {
 signing {
     def signingKey = findProperty("signing.key") as String
     def signingPassword = findProperty("signing.password") as String
-    useInMemoryPgpKeys(signingKey, signingPassword)
-    sign publishing.publications.mavenJava
+
+    // Support both old signing.* properties and new JRELEASER_* env vars
+    if (signingKey == null) {
+        signingKey = System.getenv("JRELEASER_GPG_SECRET_KEY")
+    }
+    if (signingPassword == null) {
+        signingPassword = System.getenv("JRELEASER_GPG_PASSPHRASE")
+    }
+
+    // Only configure signing if keys are available
+    if (signingKey != null && signingPassword != null) {
+        useInMemoryPgpKeys(signingKey, signingPassword)
+        sign publishing.publications.mavenJava
+    } else {
+        // Skip signing if credentials not available (e.g., local builds)
+        required = false
+    }
 }
