@@ -7,19 +7,40 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v1
-      - name: Set up JDK 8
-        uses: actions/setup-java@v1
+      - uses: actions/checkout@v4
         with:
-          java-version: 8
-      - name: Publish
-        run: >-
-             ./gradlew -Psonatype.user='${{ secrets.SONATYPE_USER }}'
-             -Psonatype.password='${{ secrets.SONATYPE_PASSWORD }}'
-             -Psigning.key='${{ secrets.PGP_SIGNING_KEY }}'
-             -Psigning.password='${{ secrets.PGP_SIGNING_PASSWORD }}'
-             -Ptag.version="${GITHUB_REF/refs\/tags\//}" build publish
+          fetch-depth: 0
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: 21
+          distribution: 'temurin'
+
+      - name: Build and Test
+        run: ./gradlew -Ptag.version="${GITHUB_REF/refs\/tags\//}" clean build
+
+      - name: Publish to Local Staging
+        run: ./gradlew -Ptag.version="${GITHUB_REF/refs\/tags\//}" publish
+
+      - name: Deploy to Maven Central with JReleaser
+        env:
+          JRELEASER_MAVENCENTRAL_USERNAME: ${{ secrets.JRELEASER_MAVENCENTRAL_USERNAME }}
+          JRELEASER_MAVENCENTRAL_TOKEN: ${{ secrets.JRELEASER_MAVENCENTRAL_TOKEN }}
+          JRELEASER_GPG_PASSPHRASE: ${{ secrets.JRELEASER_GPG_PASSPHRASE }}
+          JRELEASER_GPG_SECRET_KEY: ${{ secrets.JRELEASER_GPG_SECRET_KEY }}
+          JRELEASER_GPG_PUBLIC_KEY: ${{ secrets.JRELEASER_GPG_PUBLIC_KEY }}
+          JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./gradlew jreleaserDeploy
+
+      - name: JReleaser Output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jreleaser-logs
+          path: |
+            build/jreleaser/trace.log
+            build/jreleaser/output.properties
