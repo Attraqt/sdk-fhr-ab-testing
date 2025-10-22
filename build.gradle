@@ -209,3 +209,38 @@ signing {
         required = false
     }
 }
+
+jreleaser {
+    project {
+        name = 'sdk-fhr-ab-testing'
+        description = 'Fredhopper A/B Testing SDK'
+        authors = ['Attraqt']
+        license = 'GPL-3.0'
+        inceptionYear = '2020'
+        links {
+            homepage = 'https://github.com/Attraqt/sdk-fhr-ab-testing'
+        }
+        java {
+            groupId = 'com.attraqt'
+            version = '21'
+        }
+    }
+
+    signing {
+        active = 'ALWAYS'
+        armored = true
+    }
+
+    deploy {
+        maven {
+            mavenCentral {
+                active = 'ALWAYS'
+                sonatype {
+                    active = 'ALWAYS'
+                    url = 'https://central.sonatype.com/api/v1/publisher'
+                    stagingRepositories = ['build/staging-deploy']
+                }
+            }
+        }
+    }
+}
