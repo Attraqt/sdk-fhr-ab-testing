@@ -136,6 +136,7 @@ task sourcesJar(type: Jar) {
     archiveClassifier.set("sources")
     from sourceSets.main.allJava
 }
+
 task javadocJar(type: Jar, dependsOn: javadoc) {
     archiveClassifier.set("javadoc")
     from javadoc.destinationDir
@@ -150,7 +151,7 @@ publishing {
     repositories {
         maven {
             name = "staging"
-            url = layout.buildDirectory.dir("staging-deploy")
+            url = uri("file://${buildDir}/staging-deploy")
         }
     }
     publications {
@@ -164,8 +165,6 @@ publishing {
                 description = 'The Fredhopper A/B Testing SDK is a software library which simplifies adding' +
                         ' A/B testing of Fredhopper merchandising rules and configuration to your website backend'
                 url = 'https://github.com/Attraqt/sdk-fhr-ab-testing'
-                def tagVersion = findProperty("tag.version") as String
-                version = (tagVersion && !tagVersion.empty)? tagVersion : project.getVersion()
                 licenses {
                     license {
                         name = 'GNU General Public License, Version 3'
